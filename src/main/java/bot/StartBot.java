@@ -13,8 +13,7 @@ public class StartBot {
         public static void main(String[] args) {
             try {
                 TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            //    botsApi.registerBot(new Bot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
-                botsApi.registerBot(new Bot("BeerTimeAndelBot", "1911489310:AAFYwfw0DIm4SSqywGihF1AUvK2qOgQ6y1c"));
+                botsApi.registerBot(new Bot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }

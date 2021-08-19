@@ -30,7 +30,7 @@ public class ShowAllCommand extends ServiceCommand {
         StringBuilder beerList = new StringBuilder();
         for (Map.Entry<String, ItemDTO> beer : beers.entrySet()) {
             if (!beer.getValue().getInfo().isAvailable())
-                beerList.append(EmojiParser.parseToUnicode(":cross mark:"));
+                beerList.append(":cross mark:");
             beerList.append("id: ").append(beer.getValue().getId()).append(" ")
                     .append(beer.getValue().getInfo())
                     .append("\n").append(beer.getValue().getSmallVolume())
@@ -39,6 +39,7 @@ public class ShowAllCommand extends ServiceCommand {
                 beerList.append(" BEER IS NOT AVAILABLE NOW");
                     beerList.append("\n\n");
         }
+        String answer = EmojiParser.parseToUnicode(beerList.toString());
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                 "Actual menu: \n" + beerList);
     }

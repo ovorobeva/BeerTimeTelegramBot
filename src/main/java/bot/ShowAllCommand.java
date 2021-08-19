@@ -1,6 +1,7 @@
 package bot;
 
 import DTO.ItemDTO;
+import com.vdurmont.emoji.EmojiParser;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -29,7 +30,7 @@ public class ShowAllCommand extends ServiceCommand {
         StringBuilder beerList = new StringBuilder();
         for (Map.Entry<String, ItemDTO> beer : beers.entrySet()) {
             if (!beer.getValue().getInfo().isAvailable())
-                beerList.append("\\xE2\\x9D\\x8C");
+                beerList.append(EmojiParser.parseToUnicode(":cross mark:"));
             beerList.append("id: ").append(beer.getValue().getId()).append(" ")
                     .append(beer.getValue().getInfo())
                     .append("\n").append(beer.getValue().getSmallVolume())

@@ -39,8 +39,8 @@ public class ShowAllCommand extends ServiceCommand {
                     .append(" ").append(beer.getValue().getLargeVolume());
             if (!beer.getValue().getInfo().isAvailable())
                 beerList.append("~");
-               // beerList.append(" BEER IS NOT AVAILABLE NOW");
-                    beerList.append("\n\n");
+            // beerList.append(" BEER IS NOT AVAILABLE NOW");
+            beerList.append("\n\n");
         }
         String answer = URLEncoder.encode(beerList.toString(), "UTF-8");
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,

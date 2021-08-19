@@ -41,6 +41,6 @@ public class ShowAllCommand extends ServiceCommand {
         }
         String answer = EmojiParser.parseToUnicode(beerList.toString());
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                "Actual menu: \n" + beerList);
+                "Actual menu: \n" + answer);
     }
 }

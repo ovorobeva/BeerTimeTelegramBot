@@ -43,6 +43,7 @@ public class NotifyCommand extends ServiceCommand {
             };
         if (!isStopped) {
             List<String> changeList = BeerParser.checkChanges();
+
             for (String change : changeList)
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                         change);

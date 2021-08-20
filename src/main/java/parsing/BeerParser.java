@@ -56,7 +56,10 @@ public class BeerParser {
             if (oldBeersList.containsKey(currentBeer.getKey())){
                 isAvailabilityChanged(oldBeersList, changeList, currentBeer);
             } else
-                changeList.add("New beer is available: " + currentBeer.getValue().getInfo());
+                changeList.add("New beer is available: " + currentBeer.getValue().getInfo().getProvider() + " "
+                        + currentBeer.getValue().getInfo().getName() + " "
+                + currentBeer.getValue().getSmallVolume() + " "
+                + currentBeer.getValue().getLargeVolume());
         }
         return changeList;
     }
@@ -69,7 +72,7 @@ public class BeerParser {
                     if (currentBeers.get(currentBeer.getKey()).getInfo().isAvailable())
                         availability = " is now available";
                     else availability = " is not available anymore";
-                    changeList.add("Beer " + currentBeer.getValue().toString() + availability);
+                    changeList.add("Beer " + currentBeer.getValue().getInfo().getProvider() + " " + currentBeer.getValue().getInfo().getName() + availability);
                 }
     }
 

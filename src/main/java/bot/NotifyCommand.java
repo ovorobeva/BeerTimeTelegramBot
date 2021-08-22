@@ -44,7 +44,7 @@ public class NotifyCommand extends ServiceCommand {
                     startCheckingChanges(absSender, chat, userName, user);
                 }
             };
-            
+
         if (userList.contains(user)) {
             List<String> changeList = BeerParser.checkChanges();
 

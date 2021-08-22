@@ -49,14 +49,14 @@ public class BeerParser {
             if (currentBeers.containsKey(oldBeer.getKey())) {
                 isAvailabilityChanged(currentBeers, changeList, oldBeer);
             } else {
-                changeList.add("Beer " + oldBeer.getValue().getInfo().getProvider() + " " + oldBeer.getValue().getInfo().getName() + " is not available anymore");
+                changeList.add("❌ Beer " + oldBeer.getValue().getInfo().getProvider() + " " + oldBeer.getValue().getInfo().getName() + " is not available anymore");
             }
         }
         for (Map.Entry<String, ItemDTO> currentBeer : currentBeers.entrySet()){
             if (oldBeersList.containsKey(currentBeer.getKey())){
                 isAvailabilityChanged(oldBeersList, changeList, currentBeer);
             } else
-                changeList.add("New beer is available: " + currentBeer.getValue().getInfo().getProvider() + " "
+                changeList.add("✅ New beer is available: " + currentBeer.getValue().getInfo().getProvider() + " "
                         + currentBeer.getValue().getInfo().getName() + " "
                 + currentBeer.getValue().getSmallVolume() + " "
                 + currentBeer.getValue().getLargeVolume());
@@ -70,8 +70,8 @@ public class BeerParser {
                 if (currentBeer.getValue().getInfo().isAvailable() != oldBeersList.get(currentBeer.getKey()).getInfo().isAvailable()){
                     String availability;
                     if (currentBeers.get(currentBeer.getKey()).getInfo().isAvailable())
-                        availability = " is now available";
-                    else availability = " is not available anymore";
+                        availability = " is now available ✅";
+                    else availability = " is not available anymore ❌";
                     changeList.add("Beer " + currentBeer.getValue().getInfo().getProvider() + " " + currentBeer.getValue().getInfo().getName() + availability);
                 }
     }

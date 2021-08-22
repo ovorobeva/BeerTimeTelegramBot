@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import parsing.BeerParser;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,7 +16,7 @@ import java.util.TimerTask;
  */
 public class NotifyCommand extends ServiceCommand {
 
-    public static boolean isStopped;
+    public static List<User> userList = new LinkedList<>();
 
     public NotifyCommand(String identifier, String description) {
         super(identifier, description);
@@ -24,24 +25,27 @@ public class NotifyCommand extends ServiceCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
-        isStopped = false;
-        //формируем имя пользователя - поскольку userName может быть не заполнено, для этого случая используем имя и фамилию пользователя
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
+        if (!userList.contains(user)){
+        userList.add(user);
         sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                 "Start checking changes");
         //обращаемся к методу суперкласса для отправки пользователю ответа
-        startCheckingChanges(absSender, chat, this.getCommandIdentifier(), userName);
+        startCheckingChanges(absSender, chat, userName, user);
+    } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                    "You have already started notifying");
     }
 
     @SneakyThrows
-    private void startCheckingChanges(AbsSender absSender, Chat chat, String commandIdentifier, String userName) {
+    private void startCheckingChanges(AbsSender absSender, Chat chat, String userName, User user) {
             TimerTask task = new TimerTask() {
                 public void run() {
-                    startCheckingChanges(absSender, chat, commandIdentifier, userName);
+                    startCheckingChanges(absSender, chat, userName, user);
                 }
             };
-        if (!isStopped) {
+            
+        if (userList.contains(user)) {
             List<String> changeList = BeerParser.checkChanges();
 
             for (String change : changeList)

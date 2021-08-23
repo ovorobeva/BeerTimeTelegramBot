@@ -45,35 +45,43 @@ public class BeerParser {
         HashMap<String, ItemDTO> oldBeersList = currentBeers;
         List<String> changeList = new LinkedList<>();
         currentBeers = getActualBeers();
-        for (Map.Entry<String, ItemDTO> oldBeer : oldBeersList.entrySet()) {
-            if (currentBeers.containsKey(oldBeer.getKey())) {
-                isAvailabilityChanged(currentBeers, changeList, oldBeer);
-            } else {
-                changeList.add("❌ Beer " + oldBeer.getValue().getInfo().getProvider() + " " + oldBeer.getValue().getInfo().getName() + " is not available anymore");
-            }
-        }
-        for (Map.Entry<String, ItemDTO> currentBeer : currentBeers.entrySet()){
-            if (oldBeersList.containsKey(currentBeer.getKey())){
-                isAvailabilityChanged(oldBeersList, changeList, currentBeer);
-            } else
-                changeList.add("✅ New beer is available: " + currentBeer.getValue().getInfo().getProvider() + " "
-                        + currentBeer.getValue().getInfo().getName() + " "
-                + currentBeer.getValue().getSmallVolume() + " "
-                + currentBeer.getValue().getLargeVolume());
-        }
+        checkChangesInLists(currentBeers, oldBeersList, changeList, true);
+        checkChangesInLists(oldBeersList, currentBeers, changeList, false);
         return changeList;
     }
 
-    private static void isAvailabilityChanged(HashMap<String, ItemDTO> oldBeersList, List<String> changeList, Map.Entry<String, ItemDTO> currentBeer) {
-        if (!currentBeer.getValue().equals(oldBeersList.get(currentBeer.getKey())))
-            if (currentBeer.getValue().getInfo().getName().equals(oldBeersList.get(currentBeer.getKey()).getInfo().getName()))
-                if (currentBeer.getValue().getInfo().isAvailable() != oldBeersList.get(currentBeer.getKey()).getInfo().isAvailable()){
-                    String availability;
-                    if (currentBeers.get(currentBeer.getKey()).getInfo().isAvailable())
-                        availability = " is now available ✅";
-                    else availability = " is not available anymore ❌";
-                    changeList.add("Beer " + currentBeer.getValue().getInfo().getProvider() + " " + currentBeer.getValue().getInfo().getName() + availability);
+    private static void checkChangesInLists(HashMap<String, ItemDTO> beerListToCompareWith, HashMap<String, ItemDTO> beerListToRunCompare, List<String> changeList, boolean isCompairingByOldList) {
+
+        for (Map.Entry<String, ItemDTO> beer : beerListToRunCompare.entrySet()) {
+            if (beerListToCompareWith.containsKey(beer.getKey())) {
+                if (!beer.getValue().equals(beerListToCompareWith.get(beer.getKey()))) {
+                    if (beer.getValue().getInfo().getName().equals(beerListToCompareWith.get(beer.getKey()).getInfo().getName()) ||
+                            beer.getValue().getInfo().getProvider().equals(beerListToCompareWith.get(beer.getKey()).getInfo().getProvider())) {
+                        if (beer.getValue().getInfo().isAvailable() == beerListToCompareWith.get(beer.getKey()).getInfo().isAvailable()){
+                            String availability;
+                            if (beer.getValue().getInfo().isAvailable() && !isCompairingByOldList)
+                                availability = " is available now ✅";
+                            else availability = " is not available anymore ❌";
+                            changeList.add("Beer " + beer.getValue().getInfo() + availability);
+                        }
+                    } else
+                        if (isCompairingByOldList)
+                           changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
+                        else
+                        changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
+                                + beer.getValue().getSmallVolume() + " "
+                                + beer.getValue().getLargeVolume());
                 }
+            } else
+                if (isCompairingByOldList)
+                    changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
+                else
+                    changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
+                            + beer.getValue().getSmallVolume() + " "
+                            + beer.getValue().getLargeVolume());
+        }
+
+
     }
 
 

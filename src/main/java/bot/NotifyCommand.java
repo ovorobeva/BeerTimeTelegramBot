@@ -27,30 +27,33 @@ public class NotifyCommand extends ServiceCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
-        if (!userList.contains(user)){
-        userList.add(user);
-        sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                "Start checking changes");
-        //обращаемся к методу суперкласса для отправки пользователю ответа
-        startCheckingChanges(absSender, chat, userName, user);
-    } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                    "You have already started notifying");
+        if (!userList.contains(user)) {
+            userList.add(user);
+            sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                    "Start checking changes");
+            //обращаемся к методу суперкласса для отправки пользователю ответа
+            startCheckingChanges(absSender, chat, user);
+        } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                "You have already started notifying");
     }
 
     @SneakyThrows
-    private void startCheckingChanges(AbsSender absSender, Chat chat, String userName, User user) {
-            TimerTask task = new TimerTask() {
-                public void run() {
-                    startCheckingChanges(absSender, chat, userName, user);
-                }
-            };
+    private void startCheckingChanges(AbsSender absSender, Chat chat, User user) {
+        TimerTask task = new TimerTask() {
+            public void run() {
+                startCheckingChanges(absSender, chat, user);
+            }
+        };
 
         if (userList.contains(user)) {
+            System.out.println("User is found. Username is: " + user.getUserName());
             List<String> changeList = BeerParser.checkChanges();
-
-            for (String change : changeList)
-                sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                        change);
+            if (!changeList.isEmpty()) {
+                System.out.println("Changelist is: " + changeList);
+                for (String change : changeList)
+                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), user.getUserName(),
+                            change);
+            }
             Timer timer = new Timer();
             timer.schedule(task, 300000);
 

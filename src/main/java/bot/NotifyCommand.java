@@ -27,15 +27,20 @@ public class NotifyCommand extends ServiceCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
-        if (!userList.contains(user)) {
+        if (userList.contains(user))
+            sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                    "You have already started notifying");
+        else {
             userList.add(user);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
-            //обращаемся к методу суперкласса для отправки пользователю ответа
+        }
+        if (userList.isEmpty())
             startCheckingChanges(absSender, chat, user, userName);
-        } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                "You have already started notifying");
+
+        //обращаемся к методу суперкласса для отправки пользователю ответа
     }
+
 
     @SneakyThrows
     private void startCheckingChanges(AbsSender absSender, Chat chat, User user, String username) {
@@ -44,18 +49,20 @@ public class NotifyCommand extends ServiceCommand {
                 startCheckingChanges(absSender, chat, user, username);
             }
         };
-
-        if (userList.contains(user)) {
-            System.out.println("User is found. Username is: " + username);
-            List<String> changeList = BeerParser.checkChanges();
-            if (!changeList.isEmpty()) {
-                System.out.println("Changelist is: " + changeList);
-                for (String change : changeList)
-                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), username,
-                            change);
-            }
-        }
         if (!userList.isEmpty()) {
+            System.out.println("Users to notify: " + userList);
+            List<String> changeList = BeerParser.checkChanges();
+            System.out.println("Changelist is: " + changeList);
+
+            if (!changeList.isEmpty()) {
+                StringBuilder answer = new StringBuilder();
+                for (String change : changeList)
+                    answer.append(change).append("\n");
+                if (userList.contains(user)) {
+                    System.out.println("User is found. Username is: " + username);
+                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), username, answer.toString());
+                }
+            }
             Timer timer = new Timer();
             timer.schedule(task, 300000);
         }

@@ -45,6 +45,14 @@ public class BeerParser {
         HashMap<String, ItemDTO> oldBeersList = currentBeers;
         List<String> changeList = new LinkedList<>();
         currentBeers = getActualBeers();
+        if (currentBeers.isEmpty()){
+            try {
+                Thread.sleep(100);
+                currentBeers = getActualBeers();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         checkChangesInLists(currentBeers, oldBeersList, changeList, true);
         checkChangesInLists(oldBeersList, currentBeers, changeList, false);
         return changeList;

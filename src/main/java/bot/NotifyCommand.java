@@ -32,31 +32,32 @@ public class NotifyCommand extends ServiceCommand {
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
             //обращаемся к методу суперкласса для отправки пользователю ответа
-            startCheckingChanges(absSender, chat, user);
+            startCheckingChanges(absSender, chat, user, userName);
         } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                 "You have already started notifying");
     }
 
     @SneakyThrows
-    private void startCheckingChanges(AbsSender absSender, Chat chat, User user) {
+    private void startCheckingChanges(AbsSender absSender, Chat chat, User user, String username) {
         TimerTask task = new TimerTask() {
             public void run() {
-                startCheckingChanges(absSender, chat, user);
+                startCheckingChanges(absSender, chat, user, username);
             }
         };
 
         if (userList.contains(user)) {
-            System.out.println("User is found. Username is: " + user.getUserName());
+            System.out.println("User is found. Username is: " + username);
             List<String> changeList = BeerParser.checkChanges();
             if (!changeList.isEmpty()) {
                 System.out.println("Changelist is: " + changeList);
                 for (String change : changeList)
-                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), user.getUserName(),
+                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), username,
                             change);
             }
+        }
+        if (!userList.isEmpty()) {
             Timer timer = new Timer();
             timer.schedule(task, 300000);
-
         }
     }
 

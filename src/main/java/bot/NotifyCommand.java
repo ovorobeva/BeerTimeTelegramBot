@@ -27,16 +27,21 @@ public class NotifyCommand extends ServiceCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
-        if (userList.contains(user))
-            sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                    "You have already started notifying");
-        else {
+        if (userList.isEmpty()) {
             userList.add(user);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
-        }
-        if (userList.isEmpty())
             startCheckingChanges(absSender, chat, user, userName);
+        } else {
+            if (userList.contains(user))
+                sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                        "You have already started notifying");
+            else {
+                userList.add(user);
+                sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                        "Start checking changes");
+            }
+        }
 
         //обращаемся к методу суперкласса для отправки пользователю ответа
     }

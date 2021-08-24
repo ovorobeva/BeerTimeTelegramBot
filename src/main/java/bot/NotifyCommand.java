@@ -1,15 +1,11 @@
 package bot;
 
-import lombok.SneakyThrows;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import parsing.BeerParser;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Команда "Старт"
@@ -27,7 +23,9 @@ public class NotifyCommand extends ServiceCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
-        if (userList.isEmpty()) {
+        sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
+                "Notifying is temporary unavailable");}
+/*        if (userList.isEmpty()) {
             userList.add(user);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
@@ -71,6 +69,6 @@ public class NotifyCommand extends ServiceCommand {
             Timer timer = new Timer();
             timer.schedule(task, 300000);
         }
-    }
+    }*/
 
 }

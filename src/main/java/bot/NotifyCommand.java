@@ -1,18 +1,22 @@
 package bot;
 
+import lombok.SneakyThrows;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import parsing.BeerParser;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Команда "Старт"
  */
 public class NotifyCommand extends ServiceCommand {
 
-    public static List<User> userList = new LinkedList<>();
+    public static List<Chat> chatList = new LinkedList<>();
 
     public NotifyCommand(String identifier, String description) {
         super(identifier, description);
@@ -23,19 +27,17 @@ public class NotifyCommand extends ServiceCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] strings) {
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
-        sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
-                "Notifying is temporary unavailable");}
-/*        if (userList.isEmpty()) {
-            userList.add(user);
+        if (chatList.isEmpty()) {
+            chatList.add(chat);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
-            startCheckingChanges(absSender, chat, user, userName);
+            startCheckingChanges(absSender);
         } else {
-            if (userList.contains(user))
+            if (chatList.contains(chat))
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                         "You have already started notifying");
             else {
-                userList.add(user);
+                chatList.add(chat);
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                         "Start checking changes");
             }
@@ -46,14 +48,14 @@ public class NotifyCommand extends ServiceCommand {
 
 
     @SneakyThrows
-    private void startCheckingChanges(AbsSender absSender, Chat chat, User user, String username) {
+    private void startCheckingChanges(AbsSender absSender) {
         TimerTask task = new TimerTask() {
             public void run() {
-                startCheckingChanges(absSender, chat, user, username);
+                startCheckingChanges(absSender);
             }
         };
-        if (!userList.isEmpty()) {
-            System.out.println("Users to notify: " + userList);
+        if (!chatList.isEmpty()) {
+            System.out.println("Users to notify: " + chatList);
             List<String> changeList = BeerParser.checkChanges();
             System.out.println("Changelist is: " + changeList);
 
@@ -61,14 +63,15 @@ public class NotifyCommand extends ServiceCommand {
                 StringBuilder answer = new StringBuilder();
                 for (String change : changeList)
                     answer.append(change).append("\n");
-                if (userList.contains(user)) {
-                    System.out.println("User is found. Username is: " + username);
-                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), username, answer.toString());
+                for (Chat chat: chatList){
+                    String userName = (chat.getUserName() != null) ? chat.getUserName() :
+                            String.format("%s %s", chat.getLastName(), chat.getFirstName());
+                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName, answer.toString());
                 }
             }
             Timer timer = new Timer();
             timer.schedule(task, 300000);
         }
-    }*/
+    }
 
 }

@@ -17,7 +17,6 @@ public class BeerParser {
     private static final String SMALL = "small";
     private static final String LARGE = "large";
     private static HashMap<String, ItemDTO> currentBeers = getActualBeers();
-    private static BeerParser beerParser;
 
 
     public static HashMap<String, ItemDTO> getActualBeers() {
@@ -25,7 +24,6 @@ public class BeerParser {
         Document response = Document.createShell("BEERTIME");
         try {
             response = Jsoup.connect("https://www.beertime.pub/").get();
-            //    System.out.println(response.getElementsByAttributeValue("class","polozkyTab"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,6 +53,7 @@ public class BeerParser {
         }
         checkChangesInLists(currentBeers, oldBeersList, changeList, true);
         checkChangesInLists(oldBeersList, currentBeers, changeList, false);
+        System.out.println("Changelist is " + changeList);
         return changeList;
     }
 
@@ -62,10 +61,13 @@ public class BeerParser {
 
         for (Map.Entry<String, ItemDTO> beer : beerListToRunCompare.entrySet()) {
             if (beerListToCompareWith.containsKey(beer.getKey())) {
+          //      System.out.println(beer.getValue().getInfo().getName() + " is found by ID. Start comparing info.");
                 if (!beer.getValue().equals(beerListToCompareWith.get(beer.getKey()))) {
-                    if (beer.getValue().getInfo().getName().equals(beerListToCompareWith.get(beer.getKey()).getInfo().getName()) ||
+               //     System.out.println(beer.getValue() + " doesn't equals to " + beerListToCompareWith.get(beer.getKey()));
+                    if (beer.getValue().getInfo().getName().equals(beerListToCompareWith.get(beer.getKey()).getInfo().getName()) &&
                             beer.getValue().getInfo().getProvider().equals(beerListToCompareWith.get(beer.getKey()).getInfo().getProvider())) {
-                        if (beer.getValue().getInfo().isAvailable() == beerListToCompareWith.get(beer.getKey()).getInfo().isAvailable()){
+                 //       System.out.println("Beer names are equal");
+                        if (beer.getValue().getInfo().isAvailable() != beerListToCompareWith.get(beer.getKey()).getInfo().isAvailable()){
                             String availability;
                             if (beer.getValue().getInfo().isAvailable() && !isCompairingByOldList)
                                 availability = " is available now ✅";
@@ -80,13 +82,15 @@ public class BeerParser {
                                 + beer.getValue().getSmallVolume() + " "
                                 + beer.getValue().getLargeVolume());
                 }
-            } else
+                //else System.out.println(beer.getValue() + " completely equals to " + beerListToCompareWith.get(beer.getKey()));
+            } else{
+    //            System.out.println(beer.getValue().getInfo() + " is not found by ID");
                 if (isCompairingByOldList)
                     changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
                 else
                     changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
                             + beer.getValue().getSmallVolume() + " "
-                            + beer.getValue().getLargeVolume());
+                            + beer.getValue().getLargeVolume());}
         }
 
 
@@ -100,7 +104,7 @@ public class BeerParser {
         boolean isAvailable = element.getElementsByAttributeValue("class", "skrt").isEmpty();
 
         BeerInfoDTO beerInfo = new BeerInfoDTO(provider, name, description, isAvailable);
-        System.out.println("beer info: " + beerInfo);
+        System.out.println("beer info: " + beerInfo + " isAvailable = " + isAvailable);
         return beerInfo;
     }
 

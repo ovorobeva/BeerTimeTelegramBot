@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import static bot.NotifyCommand.userList;
+import static bot.NotifyCommand.chatList;
 
 /**
  * Команда "Старт"
@@ -21,8 +21,8 @@ public class StopCommand extends ServiceCommand {
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
         //обращаемся к методу суперкласса для отправки пользователю ответа
-        if (userList.contains(user)){
-            userList.remove(user);
+        if (chatList.contains(user)){
+            chatList.remove(user);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Checking changes in beer list has stopped. If you want to check again type /notify");
         } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,

@@ -21,8 +21,8 @@ public class StopCommand extends ServiceCommand {
         String userName = (user.getUserName() != null) ? user.getUserName() :
                 String.format("%s %s", user.getLastName(), user.getFirstName());
         //обращаемся к методу суперкласса для отправки пользователю ответа
-        if (chatList.contains(user)){
-            chatList.remove(user);
+        if (chatList.contains(chat)){
+            chatList.remove(chat);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Checking changes in beer list has stopped. If you want to check again type /notify");
         } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,

@@ -40,6 +40,7 @@ public class ChatsToNotifyJson {
         try (
                 BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath(), StandardCharsets.UTF_8)) {
             writer.write(chatsArray.toString());
+            System.out.println("Chats saved: " + chatsArray);
         } catch (
                 IOException e) {
             e.printStackTrace();
@@ -56,6 +57,7 @@ public class ChatsToNotifyJson {
             e.printStackTrace();
         }
         List<Chat> chatList = gson.fromJson(reader, REVIEW_TYPE);
+        System.out.println("Reading chats from file: " + chatList);
         return chatList;
     }
 
@@ -69,6 +71,7 @@ public class ChatsToNotifyJson {
             e.printStackTrace();
         }
         AbsSender absSender = gson.fromJson(reader, REVIEW_TYPE);
+        System.out.println("Getting sender from file: " + absSender);
         return absSender;
     }
 }

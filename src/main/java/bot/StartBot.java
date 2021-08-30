@@ -25,7 +25,9 @@ public class StartBot {
                 TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
                     botsApi.registerBot(new Bot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
                     chatList = ChatsToNotifyJson.readChatListFromJson();
-
+                    if (!chatList.isEmpty()){
+                    startCheckingChanges(chatList);
+                System.out.println("Chats to notify are found: \n" + chatList);}
 
             } catch (TelegramApiException e) {
                 e.printStackTrace();

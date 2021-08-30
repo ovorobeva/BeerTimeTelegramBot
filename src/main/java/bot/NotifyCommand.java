@@ -36,8 +36,8 @@ public class NotifyCommand extends ServiceCommand {
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                         "Start checking changes");
             }
-            ChatsToNotifyJson.saveChatsToJson(chatList, absSender);
         }
+        ChatsToNotifyJson.saveChatsToJson(chatList, absSender);
 
         //обращаемся к методу суперкласса для отправки пользователю ответа
     }

@@ -35,7 +35,12 @@ public class ChatsToNotifyJson {
         }
         chatsArray.put(gson.toJson(absSender));
 
-        File targetFile = new File("target\\chats_to_notify.json");
+        File targetFile = new File("target/chats_to_notify.json");
+        try {
+            targetFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try (
                 BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath(), StandardCharsets.UTF_8)) {
@@ -49,11 +54,14 @@ public class ChatsToNotifyJson {
 
     public static List<Chat> readChatListFromJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
         JsonReader reader = null;
+        File file = new File("target/chats_to_notify.json");
         try {
-            reader = new JsonReader(new FileReader("target\\chats_to_notify.json"));
+            file.createNewFile();
+            reader = new JsonReader(new FileReader(file));
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         List<Chat> chatList = gson.fromJson(reader, REVIEW_TYPE);
@@ -64,10 +72,14 @@ public class ChatsToNotifyJson {
     public static AbsSender readAbsSenderFromJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
+        File file = new File("target/chats_to_notify.json");
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new FileReader("target\\chats_to_notify.json"));
+            file.createNewFile();
+            reader = new JsonReader(new FileReader(file));
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         AbsSender absSender = gson.fromJson(reader, REVIEW_TYPE);

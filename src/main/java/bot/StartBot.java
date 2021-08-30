@@ -10,17 +10,15 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import parsing.BeerParser;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
-import static bot.NotifyCommand.chatList;
 
 public class StartBot {
         private static final Map<String, String> getenv = System.getenv();
+    public static List<Chat> chatList = new LinkedList<>();
 
         public static void main(String[] args) {
+
             try {
                 TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
                     botsApi.registerBot(new Bot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));

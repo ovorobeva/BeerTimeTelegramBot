@@ -5,17 +5,13 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import static bot.StartBot.chatList;
 import static bot.StartBot.startCheckingChanges;
 
 /**
  * Команда "Старт"
  */
 public class NotifyCommand extends ServiceCommand {
-
-    public static List<Chat> chatList = new LinkedList<>();
 
     public NotifyCommand(String identifier, String description) {
         super(identifier, description);

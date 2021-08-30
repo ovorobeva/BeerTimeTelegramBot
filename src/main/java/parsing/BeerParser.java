@@ -53,7 +53,6 @@ public class BeerParser {
         }
         checkChangesInLists(currentBeers, oldBeersList, changeList, true);
         checkChangesInLists(oldBeersList, currentBeers, changeList, false);
-        System.out.println("Changelist is " + changeList);
         return changeList;
     }
 

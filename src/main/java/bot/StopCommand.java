@@ -1,5 +1,6 @@
 package bot;
 
+import json.ChatsToNotifyJson;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -23,6 +24,7 @@ public class StopCommand extends ServiceCommand {
         //обращаемся к методу суперкласса для отправки пользователю ответа
         if (chatList.contains(chat)){
             chatList.remove(chat);
+            ChatsToNotifyJson.saveChatsToJson(chatList, absSender);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Checking changes in beer list has stopped. If you want to check again type /notify");
         } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,

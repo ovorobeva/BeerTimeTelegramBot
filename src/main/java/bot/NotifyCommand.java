@@ -1,15 +1,14 @@
 package bot;
 
-import lombok.SneakyThrows;
+import json.ChatsToNotifyJson;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
-import parsing.BeerParser;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import static bot.StartBot.startCheckingChanges;
 
 /**
  * Команда "Старт"
@@ -31,7 +30,7 @@ public class NotifyCommand extends ServiceCommand {
             chatList.add(chat);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
-            startCheckingChanges(absSender);
+            startCheckingChanges(chatList);
         } else {
             if (chatList.contains(chat))
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
@@ -41,37 +40,12 @@ public class NotifyCommand extends ServiceCommand {
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                         "Start checking changes");
             }
+            ChatsToNotifyJson.saveChatsToJson(chatList, absSender);
         }
 
         //обращаемся к методу суперкласса для отправки пользователю ответа
     }
 
 
-    @SneakyThrows
-    private void startCheckingChanges(AbsSender absSender) {
-        TimerTask task = new TimerTask() {
-            public void run() {
-                startCheckingChanges(absSender);
-            }
-        };
-        if (!chatList.isEmpty()) {
-            System.out.println("Users to notify: " + chatList);
-            List<String> changeList = BeerParser.checkChanges();
-            System.out.println("Changelist is: " + changeList);
-
-            if (!changeList.isEmpty()) {
-                StringBuilder answer = new StringBuilder();
-                for (String change : changeList)
-                    answer.append(change).append("\n");
-                for (Chat chat: chatList){
-                    String userName = (chat.getUserName() != null) ? chat.getUserName() :
-                            String.format("%s %s", chat.getLastName(), chat.getFirstName());
-                    sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName, answer.toString());
-                }
-            }
-            Timer timer = new Timer();
-            timer.schedule(task, 300000);
-        }
-    }
 
 }

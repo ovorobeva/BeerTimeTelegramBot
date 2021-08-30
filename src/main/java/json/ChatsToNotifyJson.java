@@ -14,6 +14,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ChatsToNotifyJson {
@@ -66,6 +67,7 @@ public class ChatsToNotifyJson {
         }
         List<Chat> chatList = gson.fromJson(reader, REVIEW_TYPE);
         System.out.println("Reading chats from file: " + chatList);
+        if (chatList.isEmpty()) chatList = new LinkedList<>();
         return chatList;
     }
 

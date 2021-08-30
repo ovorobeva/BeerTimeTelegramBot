@@ -67,7 +67,7 @@ public class ChatsToNotifyJson {
         }
         List<Chat> chatList = gson.fromJson(reader, REVIEW_TYPE);
         System.out.println("Reading chats from file: " + chatList);
-        if (chatList.isEmpty()) chatList = new LinkedList<>();
+        if (chatList == null) chatList = new LinkedList<>();
         return chatList;
     }
 

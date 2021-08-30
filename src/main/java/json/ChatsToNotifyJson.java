@@ -39,6 +39,7 @@ public class ChatsToNotifyJson {
         File targetFile = new File("target/chats_to_notify.json");
         try {
             targetFile.createNewFile();
+            System.out.println("File is here: " + targetFile.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }

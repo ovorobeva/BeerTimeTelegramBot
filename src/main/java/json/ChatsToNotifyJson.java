@@ -4,9 +4,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.simple.JSONArray;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
@@ -32,9 +32,9 @@ public class ChatsToNotifyJson {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            chatsArray.put(chatToSave);
+            chatsArray.add(chatToSave);
         }
-        chatsArray.put(gson.toJson(absSender));
+        chatsArray.add(gson.toJson(absSender));
 
         File targetFile = new File("target/chats_to_notify.json");
         try {

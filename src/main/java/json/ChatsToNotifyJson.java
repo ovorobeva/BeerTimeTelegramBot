@@ -57,7 +57,7 @@ public class ChatsToNotifyJson {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonReader reader = null;
         try {
-            System.out.println("File is created: " + file.createNewFile() + " path is: " + file.getPath());
+            System.out.println("File is created: " + file.createNewFile() + " path is: " + file.getAbsolutePath());
             reader = new JsonReader(new FileReader(file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -20,6 +20,7 @@ import java.util.List;
 public class ChatsToNotifyJson {
     private static final Type REVIEW_TYPE = new TypeToken<List<Chat>>() {
     }.getType();
+    private static File file = new File("target/chats_to_notify.json");
 
     public static void saveChatsToJson(List<Chat> chatList, AbsSender absSender) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -35,16 +36,15 @@ public class ChatsToNotifyJson {
             chatsArray.add(chatToSave);
         }
 
-        File targetFile = new File("target/chats_to_notify.json");
         try {
-            targetFile.createNewFile();
-            System.out.println("File is here: " + targetFile.getAbsolutePath());
+            file.createNewFile();
+            System.out.println("File is here: " + file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try (
-                BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath(), StandardCharsets.UTF_8)) {
+                BufferedWriter writer = Files.newBufferedWriter(file.toPath(), StandardCharsets.UTF_8)) {
             writer.write(chatsArray.toString());
             System.out.println("Chats saved: " + chatsArray);
         } catch (
@@ -56,7 +56,6 @@ public class ChatsToNotifyJson {
     public static List<Chat> readChatListFromJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonReader reader = null;
-        File file = new File("app/target/chats_to_notify.json");
         try {
             System.out.println("File is created: " + file.createNewFile() + " path is: " + file.getPath());
             reader = new JsonReader(new FileReader(file));

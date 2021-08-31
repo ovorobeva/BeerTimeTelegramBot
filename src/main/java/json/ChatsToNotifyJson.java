@@ -56,7 +56,7 @@ public class ChatsToNotifyJson {
     public static List<Chat> readChatListFromJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonReader reader = null;
-        File file = new File("target/chats_to_notify.json");
+        File file = new File("app/target/chats_to_notify.json");
         try {
             System.out.println("File is created: " + file.createNewFile() + " path is: " + file.getPath());
             reader = new JsonReader(new FileReader(file));

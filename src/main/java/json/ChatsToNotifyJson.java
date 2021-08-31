@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -22,7 +21,7 @@ public class ChatsToNotifyJson {
     }.getType();
     private static File file = new File("target/chats_to_notify.json");
 
-    public static void saveChatsToJson(List<Chat> chatList, AbsSender absSender) {
+    public static void saveChatsToJson(List<Chat> chatList) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         JSONArray chatsArray = new JSONArray();
@@ -38,6 +37,9 @@ public class ChatsToNotifyJson {
 
         try {
             file.createNewFile();
+            PrintWriter writerToDelete = new PrintWriter(file);
+            writerToDelete.print("");
+            writerToDelete.close();
             System.out.println("File is here: " + file.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();

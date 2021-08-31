@@ -58,7 +58,7 @@ public class ChatsToNotifyJson {
         JsonReader reader = null;
         File file = new File("target/chats_to_notify.json");
         try {
-            file.createNewFile();
+            System.out.println("File is created: " + file.createNewFile() + " path is: " + file.getPath());
             reader = new JsonReader(new FileReader(file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -69,23 +69,5 @@ public class ChatsToNotifyJson {
         System.out.println("Reading chats from file: " + chatList);
         if (chatList == null) chatList = new LinkedList<>();
         return chatList;
-    }
-
-    public static AbsSender readAbsSenderFromJson() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        File file = new File("target/chats_to_notify.json");
-        JsonReader reader = null;
-        try {
-            file.createNewFile();
-            reader = new JsonReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        AbsSender absSender = gson.fromJson(reader, REVIEW_TYPE);
-        System.out.println("Getting sender from file: " + absSender);
-        return absSender;
     }
 }

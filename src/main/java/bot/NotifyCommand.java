@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import static bot.StartBot.chatList;
-import static bot.StartBot.startCheckingChanges;
 
 /**
  * Команда "Старт"
@@ -26,7 +25,7 @@ public class NotifyCommand extends ServiceCommand {
             chatList.add(chat);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
-            startCheckingChanges(chatList, absSender);
+            StartBot.bot.startCheckingChanges(chatList);
         } else {
             if (chatList.contains(chat))
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,

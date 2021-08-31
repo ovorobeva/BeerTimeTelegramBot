@@ -1,17 +1,22 @@
 package bot;
 
-import lombok.Getter;
+import lombok.SneakyThrows;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import parsing.BeerParser;
 
-    public final class Bot extends TelegramLongPollingCommandBot {
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public final class Bot extends TelegramLongPollingCommandBot {
         private final String BOT_NAME;
         private final String BOT_TOKEN;
-
 
         public Bot(String botName, String botToken) {
             super();
@@ -46,7 +51,37 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
             setAnswer(chatId, userName, answer);
         }
+    @SneakyThrows
+    public void startCheckingChanges(List<Chat> chatList) {
+        TimerTask task = new TimerTask() {
+            public void run() {
+                startCheckingChanges(chatList);
+            }
+        };
+        SendMessage sendMessage = new SendMessage();
+        if (!chatList.isEmpty()) {
+            System.out.println("Users to notify: " + chatList);
+            List<String> changeList = BeerParser.checkChanges();
+            System.out.println("Changelist is: " + changeList);
 
+            if (!changeList.isEmpty()) {
+                StringBuilder answer = new StringBuilder();
+                for (String change : changeList)
+                    answer.append(change).append("\n");
+                for (Chat chat : chatList) {
+                    sendMessage.setChatId(chat.getId().toString());
+                    sendMessage.setText(answer.toString());
+                    try {
+                        execute(sendMessage);
+                    } catch (TelegramApiException e) {
+                        //логируем сбой Telegram Bot API, используя userName
+                    }                }
+            }
+            Timer timer = new Timer();
+            timer.schedule(task, 300000);
+        }
+
+    }
         /**
          * Формирование имени пользователя
          * @param msg сообщение

@@ -5,16 +5,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,15 +25,16 @@ public class ChatsToNotifyJson {
 
         JSONArray chatsArray = new JSONArray();
         for (Chat chat : chatList) {
-            JSONObject chatToSave = null;
+          //  JSONObject chatToSave = null;
             try {
-                chatToSave = new JSONObject(gson.toJson(chat));
+              //  chatToSave = new JSONObject(gson.toJson(chat));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            chatsArray.add(chatToSave);
+     //       chatsArray.add(chatToSave);
+            chatsArray.add(chat);
         }
-        chatsArray.add(gson.toJson(absSender));
+     //   chatsArray.add(gson.toJson(absSender));
 
         File targetFile = new File("target/chats_to_notify.json");
         try {
@@ -45,14 +44,14 @@ public class ChatsToNotifyJson {
             e.printStackTrace();
         }
 
-/*        try (
+        try (
                 BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath(), StandardCharsets.UTF_8)) {
             writer.write(chatsArray.toString());
+            System.out.println("Chats saved: " + chatsArray);
         } catch (
                 IOException e) {
             e.printStackTrace();
-        }*/
-        System.out.println("Chats saved: " + chatsArray);
+        }
     }
 
     public static List<Chat> readChatListFromJson() {

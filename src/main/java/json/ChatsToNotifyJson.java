@@ -34,8 +34,6 @@ public class ChatsToNotifyJson {
             }
             chatsArray.add(chatToSave);
         }
-        JSONObject absSenderJson = new JSONObject(gson.toJson(absSender));
-        //   chatsArray.add(absSenderJson);
 
         File targetFile = new File("target/chats_to_notify.json");
         try {

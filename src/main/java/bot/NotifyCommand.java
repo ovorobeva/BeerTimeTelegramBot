@@ -26,7 +26,7 @@ public class NotifyCommand extends ServiceCommand {
             chatList.add(chat);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
-            startCheckingChanges(chatList);
+            startCheckingChanges(chatList, absSender);
         } else {
             if (chatList.contains(chat))
                 sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,

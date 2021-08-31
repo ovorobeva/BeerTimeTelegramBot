@@ -32,8 +32,8 @@ public class ChatsToNotifyJson {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-     //       chatsArray.add(chatToSave);
-            chatsArray.add(chat);
+            chatsArray.add(chatToSave);
+     //       chatsArray.add(chat);
         }
      //   chatsArray.add(gson.toJson(absSender));
 

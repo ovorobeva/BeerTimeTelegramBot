@@ -10,10 +10,11 @@ import org.json.simple.JSONArray;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,14 +45,14 @@ public class ChatsToNotifyJson {
             e.printStackTrace();
         }
 
-        try (
+/*        try (
                 BufferedWriter writer = Files.newBufferedWriter(targetFile.toPath(), StandardCharsets.UTF_8)) {
             writer.write(chatsArray.toString());
-            System.out.println("Chats saved: " + chatsArray);
         } catch (
                 IOException e) {
             e.printStackTrace();
-        }
+        }*/
+        System.out.println("Chats saved: " + chatsArray);
     }
 
     public static List<Chat> readChatListFromJson() {

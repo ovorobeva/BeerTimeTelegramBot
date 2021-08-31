@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.simple.JSONArray;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -25,9 +26,9 @@ public class ChatsToNotifyJson {
 
         JSONArray chatsArray = new JSONArray();
         for (Chat chat : chatList) {
-          //  JSONObject chatToSave = null;
+            JSONObject chatToSave = null;
             try {
-              //  chatToSave = new JSONObject(gson.toJson(chat));
+                chatToSave = new JSONObject(gson.toJson(chat));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

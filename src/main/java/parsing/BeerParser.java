@@ -74,7 +74,7 @@ public class BeerParser {
                             changeList.add("Beer " + beer.getValue().getInfo() + availability);
                         }
                     } else if (isCompairingByOldList) {
-                        if (!beer.getValue().getInfo().isAvailable()) {
+                        if (beer.getValue().getInfo().isAvailable()) {
                             changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
                         }
                     } else {

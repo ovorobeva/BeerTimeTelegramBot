@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import parsing.BeerParser;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -61,7 +62,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
         SendMessage sendMessage = new SendMessage();
         if (!chatList.isEmpty()) {
             System.out.println("Users to notify: " + chatList);
-            List<String> changeList = BeerParser.checkChanges();
+            Set<String> changeList = BeerParser.checkChanges();
             System.out.println("Changelist is: " + changeList);
 
             if (!changeList.isEmpty()) {

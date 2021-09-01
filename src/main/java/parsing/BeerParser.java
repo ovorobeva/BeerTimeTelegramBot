@@ -9,9 +9,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class BeerParser {
     private static final String SMALL = "small";
@@ -39,11 +39,11 @@ public class BeerParser {
         return itemsDTO;
     }
 
-    public static List<String> checkChanges() {
+    public static Set<String> checkChanges() {
         HashMap<String, ItemDTO> oldBeersList = currentBeers;
-        List<String> changeList = new LinkedList<>();
+        Set<String> changeList = new HashSet<>();
         currentBeers = getActualBeers();
-        if (currentBeers.isEmpty()){
+        if (currentBeers.isEmpty()) {
             try {
                 Thread.sleep(100);
                 currentBeers = getActualBeers();
@@ -56,40 +56,44 @@ public class BeerParser {
         return changeList;
     }
 
-    private static void checkChangesInLists(HashMap<String, ItemDTO> beerListToCompareWith, HashMap<String, ItemDTO> beerListToRunCompare, List<String> changeList, boolean isCompairingByOldList) {
+    private static void checkChangesInLists(HashMap<String, ItemDTO> beerListToCompareWith, HashMap<String, ItemDTO> beerListToRunCompare, Set<String> changeList, boolean isCompairingByOldList) {
 
         for (Map.Entry<String, ItemDTO> beer : beerListToRunCompare.entrySet()) {
             if (beerListToCompareWith.containsKey(beer.getKey())) {
-          //      System.out.println(beer.getValue().getInfo().getName() + " is found by ID. Start comparing info.");
+                //      System.out.println(beer.getValue().getInfo().getName() + " is found by ID. Start comparing info.");
                 if (!beer.getValue().equals(beerListToCompareWith.get(beer.getKey()))) {
-               //     System.out.println(beer.getValue() + " doesn't equals to " + beerListToCompareWith.get(beer.getKey()));
+                    //     System.out.println(beer.getValue() + " doesn't equals to " + beerListToCompareWith.get(beer.getKey()));
                     if (beer.getValue().getInfo().getName().equals(beerListToCompareWith.get(beer.getKey()).getInfo().getName()) &&
                             beer.getValue().getInfo().getProvider().equals(beerListToCompareWith.get(beer.getKey()).getInfo().getProvider())) {
-                 //       System.out.println("Beer names are equal");
-                        if (beer.getValue().getInfo().isAvailable() != beerListToCompareWith.get(beer.getKey()).getInfo().isAvailable()){
+                        //       System.out.println("Beer names are equal");
+                        if (beer.getValue().getInfo().isAvailable() != beerListToCompareWith.get(beer.getKey()).getInfo().isAvailable()) {
                             String availability;
                             if (beer.getValue().getInfo().isAvailable() && !isCompairingByOldList)
                                 availability = " is available now ✅";
                             else availability = " is not available anymore ❌";
                             changeList.add("Beer " + beer.getValue().getInfo() + availability);
                         }
-                    } else
-                        if (isCompairingByOldList)
-                           changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
-                        else
-                        changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
-                                + beer.getValue().getSmallVolume() + " "
-                                + beer.getValue().getLargeVolume());
+                    } else if (isCompairingByOldList) {
+                        if (!beer.getValue().getInfo().isAvailable()) {
+                            changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
+                        }
+                    } else {
+                        if (beer.getValue().getInfo().isAvailable())
+                            changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
+                                    + beer.getValue().getSmallVolume() + " "
+                                    + beer.getValue().getLargeVolume());
+                    }
                 }
                 //else System.out.println(beer.getValue() + " completely equals to " + beerListToCompareWith.get(beer.getKey()));
-            } else{
-    //            System.out.println(beer.getValue().getInfo() + " is not found by ID");
+            } else {
+                //            System.out.println(beer.getValue().getInfo() + " is not found by ID");
                 if (isCompairingByOldList)
                     changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
                 else
                     changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
                             + beer.getValue().getSmallVolume() + " "
-                            + beer.getValue().getLargeVolume());}
+                            + beer.getValue().getLargeVolume());
+            }
         }
 
 

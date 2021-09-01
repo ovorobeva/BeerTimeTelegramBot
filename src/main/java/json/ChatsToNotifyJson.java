@@ -19,7 +19,7 @@ import java.util.List;
 public class ChatsToNotifyJson {
     private static final Type REVIEW_TYPE = new TypeToken<List<Chat>>() {
     }.getType();
-    private static File file = new File("target/chats_to_notify.json");
+    private static File file = new File("resources/chats_to_notify.json");
 
     public static void saveChatsToJson(List<Chat> chatList) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

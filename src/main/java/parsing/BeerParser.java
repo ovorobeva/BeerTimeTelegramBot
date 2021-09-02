@@ -87,12 +87,16 @@ public class BeerParser {
                 //else System.out.println(beer.getValue() + " completely equals to " + beerListToCompareWith.get(beer.getKey()));
             } else {
                 //            System.out.println(beer.getValue().getInfo() + " is not found by ID");
-                if (isCompairingByOldList)
-                    changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
-                else
-                    changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
-                            + beer.getValue().getSmallVolume() + " "
-                            + beer.getValue().getLargeVolume());
+                if (isCompairingByOldList) {
+                    if (beer.getValue().getInfo().isAvailable()) {
+                        changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
+                    }
+                } else {
+                    if (beer.getValue().getInfo().isAvailable())
+                        changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
+                                + beer.getValue().getSmallVolume() + " "
+                                + beer.getValue().getLargeVolume());
+                }
             }
         }
 

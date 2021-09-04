@@ -73,12 +73,10 @@ public class BeerParser {
                             else availability = " is not available anymore ❌";
                             changeList.add("Beer " + beer.getValue().getInfo() + availability);
                         }
-                    } else if (isCompairingByOldList) {
-                        if (beer.getValue().getInfo().isAvailable()) {
+                    } else if (beer.getValue().getInfo().isAvailable()){
+                        if (isCompairingByOldList)
                             changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
-                        }
-                    } else {
-                        if (beer.getValue().getInfo().isAvailable())
+                        else
                             changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
                                     + beer.getValue().getSmallVolume() + " "
                                     + beer.getValue().getLargeVolume());

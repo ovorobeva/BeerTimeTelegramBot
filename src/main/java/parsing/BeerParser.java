@@ -1,6 +1,5 @@
 package parsing;
 
-import DTO.BeerInfoDTO;
 import DTO.ItemDTO;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,8 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class BeerParser {
-    private static final String SMALL = "small";
-    private static final String LARGE = "large";
     private static HashMap<String, ItemDTO> currentBeers = getActualBeers();
 
 
@@ -32,8 +29,7 @@ public class BeerParser {
         Elements items = response.getElementsByAttributeValue("class", "polozka");
 
         for (Element item : items) {
-            BeerInfoDTO beerInfo = getBeerInfo(item);
-            ItemDTO itemDTO = new ItemDTO(getId(item), beerInfo, getPriceInfo(item, beerInfo.isAvailable(), SMALL), getPriceInfo(item, beerInfo.isAvailable(), LARGE));
+            ItemDTO itemDTO = new ItemDTO(item);
             itemsDTO.put(itemDTO.getId(), itemDTO);
         }
         return itemsDTO;
@@ -101,39 +97,10 @@ public class BeerParser {
 
     }
 
-
-    private static BeerInfoDTO getBeerInfo(Element element) {
-        String provider = element.getElementsByAttributeValue("class", "pivovar").text();
-        String name = element.getElementsByAttributeValue("class", "nazev").text();
-        String description = element.getElementsByAttributeValue("class", "popis").text();
-        boolean isAvailable = element.getElementsByAttributeValue("class", "skrt").isEmpty();
-
-        BeerInfoDTO beerInfo = new BeerInfoDTO(provider, name, description, isAvailable);
-        System.out.println("beer info: " + beerInfo + " isAvailable = " + isAvailable);
-        return beerInfo;
-    }
-
-    private static String getId(Element element) {
+    private String getId(Element element) {
         String id = element.getElementsByIndexEquals(0).select("td").first().text();
         System.out.println("id = " + id);
         return id;
     }
 
-    private static String getPriceInfo(Element element, boolean isAvailable, String type) {
-        String volumeAndPrice = "";
-        if (!isAvailable) {
-            volumeAndPrice = "-";
-        } else {
-            switch (type) {
-                case SMALL:
-                    volumeAndPrice = element.getElementsByTag("td").get(2).text();
-                    break;
-                case LARGE:
-                    volumeAndPrice = element.getElementsByTag("td").get(3).text();
-            }
-        }
-
-        System.out.println(type + " price is: " + volumeAndPrice);
-        return volumeAndPrice;
-    }
 }

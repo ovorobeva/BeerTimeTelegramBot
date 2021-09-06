@@ -1,6 +1,8 @@
 package DTO;
 
 
+import org.jsoup.nodes.Element;
+
 import java.util.Objects;
 
 public class ItemDTO {
@@ -8,6 +10,8 @@ public class ItemDTO {
     BeerInfoDTO info;
     String smallVolume;
     String largeVolume;
+    private static final String SMALL = "small";
+    private static final String LARGE = "large";
 
     @Override
     public boolean equals(Object o) {
@@ -20,6 +24,15 @@ public class ItemDTO {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getInfo(), getSmallVolume(), getLargeVolume());
+    }
+
+    public ItemDTO(Element element) {
+        String id = element.getElementsByIndexEquals(0).select("td").first().text();
+
+        this.id = id;
+        this.info = new BeerInfoDTO(element);
+        this.smallVolume = getPriceInfo(element, info.isAvailable(), SMALL);
+        this.largeVolume = getPriceInfo(element, info.isAvailable(), LARGE);
     }
 
     public ItemDTO(String id, BeerInfoDTO info, String smallVolume, String largeVolume) {
@@ -43,6 +56,23 @@ public class ItemDTO {
         this.id = id;
     }
 
+    private String getPriceInfo(Element element, boolean isAvailable, String type) {
+        String volumeAndPrice = "";
+        if (!isAvailable) {
+            volumeAndPrice = "-";
+        } else {
+            switch (type) {
+                case SMALL:
+                    volumeAndPrice = element.getElementsByTag("td").get(2).text();
+                    break;
+                case LARGE:
+                    volumeAndPrice = element.getElementsByTag("td").get(3).text();
+            }
+        }
+
+        System.out.println(type + " price is: " + volumeAndPrice);
+        return volumeAndPrice;
+    }
     @Override
     public String toString() {
         return "ItemDTO{" +

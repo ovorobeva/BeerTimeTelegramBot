@@ -97,10 +97,4 @@ public class BeerParser {
 
     }
 
-    private String getId(Element element) {
-        String id = element.getElementsByIndexEquals(0).select("td").first().text();
-        System.out.println("id = " + id);
-        return id;
-    }
-
 }

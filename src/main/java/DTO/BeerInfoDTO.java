@@ -1,9 +1,11 @@
 package DTO;
 
+import lombok.Data;
 import org.jsoup.nodes.Element;
 
 import java.util.Objects;
 
+@Data
 public class BeerInfoDTO {
     String provider;
     String name;
@@ -77,9 +79,6 @@ public class BeerInfoDTO {
         return isAvailable;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
 
     @Override
     public String toString() {
@@ -88,27 +87,4 @@ public class BeerInfoDTO {
                 ", description: " + description + flag;
     }
 
-    public String getProvider() {
-        return provider;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

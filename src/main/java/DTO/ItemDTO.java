@@ -1,10 +1,11 @@
 package DTO;
 
 
+import lombok.Data;
 import org.jsoup.nodes.Element;
 
 import java.util.Objects;
-
+@Data
 public class ItemDTO {
     String id;
     BeerInfoDTO info;
@@ -35,27 +36,6 @@ public class ItemDTO {
         this.largeVolume = getPriceInfo(element, info.isAvailable(), LARGE);
     }
 
-    public ItemDTO(String id, BeerInfoDTO info, String smallVolume, String largeVolume) {
-        this.id = id;
-        this.info = info;
-        this.smallVolume = smallVolume;
-        this.largeVolume = largeVolume;
-    }
-
-    public ItemDTO(String id, BeerInfoDTO info, String smallVolume) {
-        this.id = id;
-        this.info = info;
-        this.smallVolume = smallVolume;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     private String getPriceInfo(Element element, boolean isAvailable, String type) {
         String volumeAndPrice = "";
         if (!isAvailable) {
@@ -81,29 +61,5 @@ public class ItemDTO {
                 ", smallVolume=" + smallVolume +
                 ", largeVolume=" + largeVolume +
                 '}';
-    }
-
-    public BeerInfoDTO getInfo() {
-        return info;
-    }
-
-    public void setInfo(BeerInfoDTO info) {
-        this.info = info;
-    }
-
-    public String getSmallVolume() {
-        return smallVolume;
-    }
-
-    public void setSmallVolume(String smallVolume) {
-        this.smallVolume = smallVolume;
-    }
-
-    public String getLargeVolume() {
-        return largeVolume;
-    }
-
-    public void setLargeVolume(String largeVolume) {
-        this.largeVolume = largeVolume;
     }
 }

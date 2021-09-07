@@ -37,8 +37,6 @@ public class NotifyCommand extends ServiceCommand {
             }
         }
         ChatsToNotifyJson.saveChatsToJson(chatList);
-
-        //обращаемся к методу суперкласса для отправки пользователю ответа
     }
 
 

@@ -29,3 +29,14 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/ovorobeva/beertimetelegrambot/bot:latest
+
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: cd BeerTimeTelegramBot && docker-compose pull && docker-compose up
+
+

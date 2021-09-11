@@ -15,6 +15,9 @@ import java.util.Set;
 public class BeerParser {
     private static HashMap<String, ItemDTO> currentBeers = getActualBeers();
 
+    public static void resetCurrentBeers(){
+        currentBeers = getActualBeers();
+    }
 
     public static HashMap<String, ItemDTO> getActualBeers() {
         HashMap<String, ItemDTO> itemsDTO = new HashMap<>();

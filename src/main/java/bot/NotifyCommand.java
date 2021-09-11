@@ -4,6 +4,7 @@ import json.ChatsToNotifyJson;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import parsing.BeerParser;
 
 import static bot.StartBot.chatList;
 
@@ -25,6 +26,7 @@ public class NotifyCommand extends ServiceCommand {
             chatList.add(chat);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Start checking changes");
+            BeerParser.resetCurrentBeers();
             StartBot.bot.startCheckingChanges(chatList);
         } else {
             if (chatList.contains(chat))

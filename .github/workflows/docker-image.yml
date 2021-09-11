@@ -37,6 +37,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.PORT }}
-          script: cd BeerTimeTelegramBot && docker-compose pull && docker-compose up
+          script: cd BeerTimeTelegramBot && docker-compose pull && docker-compose up -d
 
 

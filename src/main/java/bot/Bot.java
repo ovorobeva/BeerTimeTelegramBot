@@ -78,7 +78,8 @@ public final class Bot extends TelegramLongPollingCommandBot {
             }
             Timer timer = new Timer();
             timer.schedule(task, 300000);
-        }
+        } else
+            BeerParser.resetCurrentBeers();
 
     }
 

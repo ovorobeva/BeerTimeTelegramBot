@@ -15,8 +15,8 @@ import java.util.Set;
 public class BeerParser {
     private static HashMap<String, ItemDTO> currentBeers = getActualBeers();
 
-    public static void resetCurrentBeers(){
-        currentBeers = getActualBeers();
+    public static void resetCurrentBeers() {
+        currentBeers = null;
     }
 
     public static HashMap<String, ItemDTO> getActualBeers() {
@@ -72,7 +72,7 @@ public class BeerParser {
                             else availability = " is not available anymore ❌";
                             changeList.add("Beer " + beer.getValue().getInfo() + availability);
                         }
-                    } else if (beer.getValue().getInfo().isAvailable()){
+                    } else if (beer.getValue().getInfo().isAvailable()) {
                         if (isCompairingByOldList)
                             changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
                         else
@@ -82,22 +82,18 @@ public class BeerParser {
                     }
                 }
                 //else System.out.println(beer.getValue() + " completely equals to " + beerListToCompareWith.get(beer.getKey()));
-            } else {
+            } else if (beer.getValue().getInfo().isAvailable()) {
                 //            System.out.println(beer.getValue().getInfo() + " is not found by ID");
-                if (isCompairingByOldList) {
-                    if (beer.getValue().getInfo().isAvailable()) {
-                        changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
-                    }
-                } else {
-                    if (beer.getValue().getInfo().isAvailable())
-                        changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
-                                + beer.getValue().getSmallVolume() + " "
-                                + beer.getValue().getLargeVolume());
-                }
+                if (isCompairingByOldList)
+                    changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
+                else
+                    changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
+                            + beer.getValue().getSmallVolume() + " "
+                            + beer.getValue().getLargeVolume());
+
             }
+
+
         }
-
-
     }
-
 }

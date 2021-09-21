@@ -24,9 +24,9 @@ public final class Bot extends TelegramLongPollingCommandBot {
         this.BOT_NAME = botName;
         this.BOT_TOKEN = botToken;
 
-        register(new ShowAllCommand("show", "Показать все"));
-        register(new NotifyCommand("notify", "Сообщи, когда обновится"));
-        register(new StopCommand("stop", "Больше не сообщай"));
+        register(new ShowAllCommand("show", "Shows current beer list"));
+        register(new NotifyCommand("notify", "Notifies when there are any changes in list"));
+        register(new StopCommand("stop", "Stops notifying"));
     }
 
     @Override
@@ -83,24 +83,12 @@ public final class Bot extends TelegramLongPollingCommandBot {
 
     }
 
-    /**
-     * Формирование имени пользователя
-     *
-     * @param msg сообщение
-     */
     private String getUserName(Message msg) {
         User user = msg.getFrom();
         String userName = user.getUserName();
         return (userName != null) ? userName : String.format("%s %s", user.getLastName(), user.getFirstName());
     }
 
-    /**
-     * Отправка ответа
-     *
-     * @param chatId   id чата
-     * @param userName имя пользователя
-     * @param text     текст ответа
-     */
     private void setAnswer(Long chatId, String userName, String text) {
         SendMessage answer = new SendMessage();
         answer.setText(text);

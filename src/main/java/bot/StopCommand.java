@@ -24,6 +24,7 @@ public class StopCommand extends ServiceCommand {
         if (chatList.contains(chat)){
             chatList.remove(chat);
             ChatsToNotifyJson.saveChatsToJson(chatList);
+            System.out.println("Chats to notify: " + chatList);
             sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,
                     "Checking changes in beer list has stopped. If you want to check again type /notify");
         } else sendAnswer(absSender, chat.getId(), this.getCommandIdentifier(), userName,

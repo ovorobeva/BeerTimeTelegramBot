@@ -39,6 +39,8 @@ public class NotifyCommand extends ServiceCommand {
             }
         }
         ChatsToNotifyJson.saveChatsToJson(chatList);
+        System.out.println("Chats to notify: " + chatList);
+
     }
 
 

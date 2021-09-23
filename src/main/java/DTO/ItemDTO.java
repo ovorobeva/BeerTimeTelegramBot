@@ -50,7 +50,7 @@ public class ItemDTO {
             }
         }
 
-        System.out.println(type + " price is: " + volumeAndPrice);
+  //      System.out.println(type + " price is: " + volumeAndPrice);
         return volumeAndPrice;
     }
     @Override

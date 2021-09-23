@@ -55,7 +55,7 @@ public class BeerParser {
         return changeList;
     }
 
-    private static void checkChangesInLists(HashMap<String, ItemDTO> beerListToCompareWith, HashMap<String, ItemDTO> beerListToRunCompare, Set<String> changeList, boolean isCompairingByOldList) {
+    private static void checkChangesInLists(HashMap<String, ItemDTO> beerListToCompareWith, HashMap<String, ItemDTO> beerListToRunCompare, Set<String> changeList, boolean isOldBeer) {
 
         for (Map.Entry<String, ItemDTO> beer : beerListToRunCompare.entrySet()) {
             if (beerListToCompareWith.containsKey(beer.getKey())) {
@@ -67,29 +67,40 @@ public class BeerParser {
                         //       System.out.println("Beer names are equal");
                         if (beer.getValue().getInfo().isAvailable() != beerListToCompareWith.get(beer.getKey()).getInfo().isAvailable()) {
                             String availability;
-                            if (beer.getValue().getInfo().isAvailable() && !isCompairingByOldList)
+                            if (beer.getValue().getInfo().isAvailable() && !isOldBeer)
                                 availability = " is available now ✅";
                             else availability = " is not available anymore ❌";
-                            changeList.add("Beer " + beer.getValue().getInfo() + availability);
+                            {
+                                changeList.add("Beer " + beer.getValue().getInfo() + availability);
+                                System.out.println("adding a beer to the changelist: " + beer.getValue().getInfo() + " " +  availability + "Beer is found in the old list: " + isOldBeer);
+                            }
                         }
                     } else if (beer.getValue().getInfo().isAvailable()) {
-                        if (isCompairingByOldList)
+                        if (isOldBeer){
                             changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
-                        else
+                            System.out.println("adding a beer to the changelist: " + beer.getValue().getInfo() + " " + beer.getValue().getInfo().isAvailable() + "Beer is found in the old list: " + isOldBeer);
+                        }
+                        else {
                             changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
                                     + beer.getValue().getSmallVolume() + " "
                                     + beer.getValue().getLargeVolume());
+                            System.out.println("adding a beer to the changelist: " + beer.getValue().getInfo() + " " + beer.getValue().getInfo().isAvailable() + "Beer is found in the old list: " + isOldBeer);
+                        }
                     }
                 }
                 //else System.out.println(beer.getValue() + " completely equals to " + beerListToCompareWith.get(beer.getKey()));
             } else if (beer.getValue().getInfo().isAvailable()) {
                 //            System.out.println(beer.getValue().getInfo() + " is not found by ID");
-                if (isCompairingByOldList)
+                if (isOldBeer) {
                     changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
-                else
+                    System.out.println("adding a beer to the changelist: " + beer.getValue().getInfo() + " " + beer.getValue().getInfo().isAvailable() + "Beer is found in the old list: " + isOldBeer);
+                }
+                else{
                     changeList.add("✅ New beer is available: " + beer.getValue().getInfo()
                             + beer.getValue().getSmallVolume() + " "
                             + beer.getValue().getLargeVolume());
+                    System.out.println("adding a beer to the changelist: " + beer.getValue().getInfo() + " " + beer.getValue().getInfo().isAvailable() + "Beer is found in the old list: " + isOldBeer);
+                }
 
             }
 

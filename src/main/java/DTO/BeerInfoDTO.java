@@ -39,7 +39,7 @@ public class BeerInfoDTO {
         this.description = description;
         this.isAvailable = isAvailable;
         this.flag = flag;
-        System.out.println("beer info: " + this + " isAvailable = " + isAvailable);
+     //   System.out.println("beer info: " + this + " isAvailable = " + isAvailable);
     }
 
 

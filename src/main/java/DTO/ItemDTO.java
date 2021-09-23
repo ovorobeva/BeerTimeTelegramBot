@@ -28,9 +28,8 @@ public class ItemDTO {
     }
 
     public ItemDTO(Element element) {
-        String id = element.getElementsByIndexEquals(0).select("td").first().text();
 
-        this.id = id;
+        this.id = element.getElementsByIndexEquals(0).select("td").first().text();
         this.info = new BeerInfoDTO(element);
         this.smallVolume = getPriceInfo(element, info.isAvailable(), SMALL);
         this.largeVolume = getPriceInfo(element, info.isAvailable(), LARGE);
@@ -50,7 +49,6 @@ public class ItemDTO {
             }
         }
 
-  //      System.out.println(type + " price is: " + volumeAndPrice);
         return volumeAndPrice;
     }
     @Override

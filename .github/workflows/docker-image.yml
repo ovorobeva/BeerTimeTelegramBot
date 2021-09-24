@@ -28,7 +28,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/ovorobeva/beertimetelegrambot/bot:latest
+          tags: ghcr.io/ovorobeva/beertimetelegrambot:latest
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master

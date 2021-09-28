@@ -52,6 +52,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
 
     @SneakyThrows
     public void startCheckingChanges(List<Chat> chatList) {
+        System.out.println("Checking...");
         TimerTask task = new TimerTask() {
             public void run() {
                 startCheckingChanges(chatList);
@@ -78,8 +79,7 @@ public final class Bot extends TelegramLongPollingCommandBot {
             }
             Timer timer = new Timer();
             timer.schedule(task, 300000);
-        } else
-            BeerParser.resetCurrentBeers();
+        }
 
     }
 

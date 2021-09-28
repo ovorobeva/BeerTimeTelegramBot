@@ -87,9 +87,9 @@ public class BeerParser {
                         }
                     }
                 }
-                //else System.out.println(beer.getValue() + " completely equals to " + beerListToCompareWith.get(beer.getKey()));
+                else System.out.println(beer.getValue() + " completely equals to " + beerListToCompareWith.get(beer.getKey()));
             } else if (beer.getValue().getInfo().isAvailable()) {
-                //            System.out.println(beer.getValue().getInfo() + " is not found by ID");
+                            System.out.println(beer.getValue().getInfo() + " is not found by ID");
                 if (isOldBeer) {
                     changeList.add("❌ Beer " + beer.getValue().getInfo() + " is not available anymore");
                     System.out.println("adding a beer to the changelist: " + beer.getValue().getInfo() + " " + beer.getValue().getInfo().isAvailable() + "Beer is found in the old list: " + isOldBeer);

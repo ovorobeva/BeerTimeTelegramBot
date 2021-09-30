@@ -16,7 +16,7 @@ public class BeerParser {
     private static HashMap<String, ItemDTO> currentBeers = getActualBeers();
 
     public static void resetCurrentBeers() {
-        currentBeers = null;
+        currentBeers = getActualBeers();
     }
 
     public static HashMap<String, ItemDTO> getActualBeers() {
